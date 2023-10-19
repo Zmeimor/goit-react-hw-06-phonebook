@@ -1,9 +1,13 @@
 import { Button } from "./Button";
 import  {useState}  from "react";
-export function  Form ({onSubmit}) {
+import { useSelector, useDispatch } from 'react-redux';
+import { getContacts, addContacts } from '../redux/ContactsSlice';
+export function  Form () {
   
   const [name,setName] = useState('');
   const [number,setNumber] = useState('');
+  const dispatch = useDispatch();
+  const contacts = useSelector(getContacts);
 
 const handleInput = evt => {
   setName (evt.target.value);
@@ -15,7 +19,16 @@ const handleNumber = evt => {
       
 const handleSubmit = evt => {
         evt.preventDefault();
-        onSubmit({name,number});
+        const searchSameName = contacts.some
+        ( cont => cont.name.toLowerCase() === name.toLowerCase() );
+    
+        if (searchSameName) {
+          alert(`${name} is already in contacts`);
+        } else if (name.length === 0) {
+          alert("Fields must be filled!");
+        } else {
+dispatch(addContacts ({name, number}));
+        }
         reset();
       };
     
@@ -56,5 +69,5 @@ Number
 </label>
 <Button/>
 </form>
-)
+);
 }
